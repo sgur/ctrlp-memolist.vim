@@ -28,12 +28,13 @@ call add(g:ctrlp_ext_vars, {
 function! ctrlp#memolist#init()
   " Conceal file path
   setlocal concealcursor=n conceallevel=3
-  syntax match Conceal /\t.*$/ conceal
+  syntax match Conceal /title:.*\t\zs.*$/ conceal
+  syntax match
 
   let path = get(g:, 'memolist_path', expand('~/memo'))
   let suffix = get(g:, 'memolist_memo_suffix', 'markdown')
   let files = globpath(path, '*.' . suffix, 1, 1)
-  let input = map(files, "matchstr(readfile(v:val, 0, 1)[0], 'title:\\zs.*') . '\t' . v:val")
+  let input = map(files, "matchstr(readfile(v:val, 0, 1)[0], '\\zstitle:.*') . '\t' . v:val")
   return input
 endfunction
 
