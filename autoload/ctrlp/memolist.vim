@@ -15,6 +15,7 @@ call add(g:ctrlp_ext_vars, {
   \ 'accept': 'ctrlp#memolist#accept',
   \ 'lname': 'memolist',
   \ 'sname': 'memo',
+  \ 'enter': 'ctrlp#memolist#enter()',
   \ 'type': 'tabe',
   \ 'sort': 0,
   \ 'specinput': 0,
@@ -32,10 +33,14 @@ let s:memo = {
 " Return: List of {title}\t{path}
 "
 function! ctrlp#memolist#init()
+  return s:memo.entries
+endfunction
+
+
+function! ctrlp#memolist#enter()
   let g:ctrlp#memolist#path =
         \ fnamemodify(!exists('g:ctrlp#memolist#path') || empty(g:ctrlp#memolist#path)
         \ ? g:memolist_path : g:ctrlp#memolist#path, ':p')
-  let &titlestring = g:ctrlp#memolist#path
   let suffix = get(g:, 'memolist_memo_suffix', 'markdown')
   let files = globpath(g:ctrlp#memolist#path, '*.' . suffix, 1, 1)
   let last_modified = max(map(copy(files), 'getftime(v:val)'))
@@ -43,7 +48,6 @@ function! ctrlp#memolist#init()
     let s:memo.entries = s:entrylist(files)
     let s:memo.last_update = last_modified
   endif
-  return s:memo.entries
 endfunction
 
 
