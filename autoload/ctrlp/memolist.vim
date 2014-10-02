@@ -32,7 +32,10 @@ let s:memo = {
 " Return: List of {title}\t{path}
 "
 function! ctrlp#memolist#init()
-  let g:ctrlp#memolist#path = fnamemodify(get(g:, 'ctrlp#memolist#path', g:memolist_path), ':p')
+  let g:ctrlp#memolist#path =
+        \ fnamemodify(!exists('g:ctrlp#memolist#path') || empty(g:ctrlp#memolist#path)
+        \ ? g:memolist_path : g:ctrlp#memolist#path, ':p')
+  let &titlestring = g:ctrlp#memolist#path
   let suffix = get(g:, 'memolist_memo_suffix', 'markdown')
   let files = globpath(g:ctrlp#memolist#path, '*.' . suffix, 1, 1)
   let last_modified = max(map(copy(files), 'getftime(v:val)'))
