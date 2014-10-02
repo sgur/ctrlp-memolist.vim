@@ -32,9 +32,9 @@ let s:memo = {
 " Return: List of {title}\t{path}
 "
 function! ctrlp#memolist#init()
-  let path = get(g:, 'memolist_path', expand('~/memo'))
+  let g:ctrlp#memolist#path = fnamemodify(get(g:, 'ctrlp#memolist#path', g:memolist_path), ':p')
   let suffix = get(g:, 'memolist_memo_suffix', 'markdown')
-  let files = globpath(path, '*.' . suffix, 1, 1)
+  let files = globpath(g:ctrlp#memolist#path, '*.' . suffix, 1, 1)
   let last_modified = max(map(copy(files), 'getftime(v:val)'))
   if len(files) != len(s:memo.entries) || s:memo.last_update < last_modified
     let s:memo.entries = s:entrylist(files)
@@ -124,9 +124,8 @@ endfunction
 "
 function! ctrlp#memolist#accept(mode, str)
   call ctrlp#exit()
-  let path = get(g:, 'memolist_path', expand('~/memo'))
   let fname = split(a:str, "\t")[-1]
-  execute 'edit' expand(path . '/' . fname[1: -2] )
+  execute 'edit' expand(g:ctrlp#memolist#path . fname[1: -2] )
 endfunction
 
 

@@ -8,7 +8,8 @@ set cpo&vim
 
 
 if get(g:, 'loaded_ctrlp', 0)
-  command! -nargs=? -complete=dir CtrlPMemoList call ctrlp#init(ctrlp#memolist#id(), !empty(<q-args>) ? {'dir': <q-args>} : {})
+  command! -nargs=? -complete=dir CtrlPMemoList
+        \ let g:ctrlp#memolist#path = <q-args> | call ctrlp#init(ctrlp#memolist#id())
 endif
 
 
